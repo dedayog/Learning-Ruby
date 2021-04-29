@@ -36,56 +36,55 @@ p bry
 # Я для переопределил это задание для как:
 # «За один проход выбрать все элементы массива являющиеся частями монотонных функций.
 # Вывести результат с индексами начала и конца таких частей, а также общее количество
-# частей отдельно для возрастающих и убывающих функций. При подсчете
+# частей отдельно для возрастающих и убывающих функций. При подсчете допускается
 # пропустить все пары Xn = Xn+1 если они не являются частями явно выраженных монотонных функций»
-#  Решение задачи - не решил за 13  часов
+# Решение задачи - не решил за 13  часов.... спустя 5 часов...
+# Упоротый компост! Нашел метод slice_when который решает задачу в два хода
 def task21
   puts "Define a parts of sequence"
-  m = mary(15,5,-5)
-  m = [5,5,6,7,10,5,4,3,3]
-  seq_up, seq_down = [], []
-  grow_up, grow_down, grow_none = false, false, false
-  g_up_cnt, g_down_cnt = 0, 0
-  sz = m.size
-  1.upto sz-1 do |idx|
-    # Elements are equal
-    if m[idx] == m[idx+1] && !grow_none
-      if !grow_up
-        seq_up << idx
-        grow_up = true
-      end
-      if !grow_down
-        seq_down << idx
-        grow_down = true
-      end
-      grow_none = true
-    end
-    if m[idx] < m[idx+1]
-      if grow_up && grow_up == grow_none
-      end
-      if grow_none != 0 && grow_down == grow_none
-        seq_down.slice!(-1)
-        grow_down = 0
-      end
-      if grow_down !=0
-        seq_down << idx
-        g_down_cnt += 1
-      end
-    end
-    if m[idx] > m[idx+1]
-    end
-  end
-end
-
+  m = mary(25,15,-15)
+  # m = [5,5,6,7,10,5,4,3,3]
+#   seq_up, seq_down = [], []
+#   grow_up, grow_down, grow_none = false, false, false
+#   g_up_cnt, g_down_cnt = 0, 0
+#   sz = m.size
+#   1.upto sz-1 do |idx|
+#     # Elements are equal
+#     if m[idx] == m[idx+1] && !grow_none
+#       if !grow_up
+#         seq_up << idx
+#         grow_up = true
+#       end
+#       if !grow_down
+#         seq_down << idx
+#         grow_down = true
+#       end
+#       grow_none = true
+#     end
+#     if m[idx] < m[idx+1]
+#       if grow_up && grow_up == grow_none
+#       end
+#       if grow_none != 0 && grow_down == grow_none
+#         seq_down.slice!(-1)
+#         grow_down = 0
+#       end
+#       if grow_down !=0
+#         seq_down << idx
+#         g_down_cnt += 1
+#       end
+#     end
+#     if m[idx] > m[idx+1]
+#     end
+#   end
+# end
 # Tests
   print "Array: #{m} \n"
-  p seq_up, seq_down
-  print "-- increasing sequence -- \n Values: "
-  seq_up.each_index {|i| print "from #{m[i-1]} to #{m[i]} in pos [#{i-1}], [#{i}]  |  " if i.even?}
-  puts "Total #{g_up_cnt} pairs"
-  print "-- decreasing sequence -- \n Values: "
-  seq_down.each_index {|i| print "from #{m[i-1]} to #{m[i]} in pos [#{i-1}], [#{i}]  |  " if i.even?}
-  puts "Total #{g_down_cnt} pairs"
+  c = m.slice_when {|a,b| a >= b}.select {|ary| ary.size>1}
+  puts "-- increasing sequence -- \n Total chunks: #{c.size},  with values:"
+  p c
+  c = m.slice_when {|a,b| a <= b}.select {|ary| ary.size>1}
+  puts "-- decreasing sequence -- \n Total chunks: #{c.size},  with values:"
+  p c
 end
 
 task21
