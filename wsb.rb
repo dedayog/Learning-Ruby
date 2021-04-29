@@ -28,7 +28,120 @@ bry = mary(5,15)
 p bry
 =end
 
+# Задачник отложен до лучших времен
 
+# Task 21, 22
+# В задачнике было:
+# «Определить количество участков, на которых элементы массива монотонно возрастают.»
+# Я для переопределил это задание для как:
+# «За один проход выбрать все элементы массива являющиеся частями монотонных функций.
+# Вывести результат с индексами начала и конца таких частей, а также общее количество
+# частей отдельно для возрастающих и убывающих функций. При подсчете
+# пропустить все пары Xn = Xn+1 если они не являются частями явно выраженных монотонных функций»
+#  Решение задачи - не решил за 13  часов
+def task21
+  puts "Define a parts of sequence"
+  m = mary(15,5,-5)
+  m = [5,5,6,7,10,5,4,3,3]
+  seq_up, seq_down = [], []
+  grow_up, grow_down, grow_none = false, false, false
+  g_up_cnt, g_down_cnt = 0, 0
+  sz = m.size
+  1.upto sz-1 do |idx|
+    # Elements are equal
+    if m[idx] == m[idx+1] && !grow_none
+      if !grow_up
+        seq_up << idx
+        grow_up = true
+      end
+      if !grow_down
+        seq_down << idx
+        grow_down = true
+      end
+      grow_none = true
+    end
+    if m[idx] < m[idx+1]
+      if grow_up && grow_up == grow_none
+      end
+      if grow_none != 0 && grow_down == grow_none
+        seq_down.slice!(-1)
+        grow_down = 0
+      end
+      if grow_down !=0
+        seq_down << idx
+        g_down_cnt += 1
+      end
+    end
+    if m[idx] > m[idx+1]
+    end
+  end
+end
+
+# Tests
+  print "Array: #{m} \n"
+  p seq_up, seq_down
+  print "-- increasing sequence -- \n Values: "
+  seq_up.each_index {|i| print "from #{m[i-1]} to #{m[i]} in pos [#{i-1}], [#{i}]  |  " if i.even?}
+  puts "Total #{g_up_cnt} pairs"
+  print "-- decreasing sequence -- \n Values: "
+  seq_down.each_index {|i| print "from #{m[i-1]} to #{m[i]} in pos [#{i-1}], [#{i}]  |  " if i.even?}
+  puts "Total #{g_down_cnt} pairs"
+end
+
+task21
+exit
+# Task 18, 20
+m = mary(10, 20, -20)
+maximum_of_array = m.size
+minimum, minimums_count = nil, 0
+1.upto maximum_of_array-2 do |idx|
+  if m[idx-1] > m[idx] && m[idx] < m[idx+1]
+    current_minimum = m[idx]
+    minimums_count += 1
+    if minimum.nil?
+      minimum = current_minimum
+    elsif current_minimum < minimum
+      minimum = current_minimum
+    end
+  end
+end
+# Tests
+p m
+p minimum, minimums_count
+
+exit
+# Task 17, 19
+m = mary(10,10,-10)
+cnt, max = 0, nil
+mary.each_cons(3) do |a,b,c| # Still i dont know how to write it in a line ;-(
+  if a<b&&b>c
+     cnt+=1
+     if max.nil? || b > max
+       max = b
+     end
+   end
+ end
+p m, cnt, max
+
+exit
+# Task 16.. increase array range for frequent sequence searches
+m = mary(100, 20, -20).map(&:to_f) # float for frequent
+puts 'Parts of Geometric progression: ' # run several times for rusult !!!
+m.each_index do |idx|
+  if (idx > 0 && idx < m.size-1) && m[idx]/m[idx-1] == m[idx+1]/m[idx]
+    puts "#{m[idx-1]} #{m[idx]} #{m[idx+1]} with a common ratio #{m[idx+1]/m[idx]}"
+  end
+end
+
+exit
+# Task 15
+m = mary
+puts 'Parts of Arithmetic progression: '
+m.each_index do |idx|
+  if (idx > 0 && idx < m.size-1) && m[idx]-m[idx-1] == m[idx+1]-m[idx]
+    puts "#{m[idx-1]} #{m[idx]} #{m[idx+1]} with a common difference of #{m[idx+1]-m[idx]}"
+  end
+end
 
 exit
 # Task 13 - 14
