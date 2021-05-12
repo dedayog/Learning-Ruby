@@ -1,14 +1,21 @@
-MY_ARRAY_SIZE = 10
-MIN_VALUE_FOR_RAND = -20
-MAX_VALUE_FOR_RAND = 20
-
-def mary (sz=MY_ARRAY_SIZE, max=MAX_VALUE_FOR_RAND, min=MIN_VALUE_FOR_RAND)
-  (1..sz).map {rand(min..max)}
+p Encoding.locale_charmap
+__END__
+CONST = ' out there'
+class Inside_one
+   CONST = proc {' in there'}
+   def where_is_my_CONST
+      ::CONST + ' inside one'
+   end
 end
-
-  m = mary (20)
-p m
-c = m.slice_when {|a,b| a <= b}.to_a
-p c
-c = m.slice_when {|a,b| a >= b}.select {|ary| ary.size>1}
-p c, c.size
+class Inside_two
+   CONST = ' inside two'
+   def where_is_my_CONST
+      CONST
+   end
+end
+puts Inside_one.new.where_is_my_CONST
+puts Inside_two.new.where_is_my_CONST
+puts Object::CONST + Inside_two::CONST
+puts Inside_two::CONST + CONST
+puts Inside_one::CONST
+puts Inside_one::CONST.call + Inside_two::CONST
