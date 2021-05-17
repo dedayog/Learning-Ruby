@@ -9,11 +9,14 @@ password = '' # Удалён в целях бехопасности
 
 test_mail = '@mail.ru'
 
+subject = gets.chomp.encode('UTF-8')
+subject ||= 'Привет из программы на руби'
+
 print 'Body text:'
 mail_body_text = gets.chomp.encode('UTF-8')
 
 Pony.mail ({
-  :subject => 'Привет из программы на руби',
+  :subject => subject,
   :body => mail_body_text,
   :to => test_mail,
   :from => my_mail,
