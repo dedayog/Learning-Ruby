@@ -5,16 +5,15 @@ class ResultPrinter
     @status_images = Array.new(ERRORS)
     (ERRORS+1).times do |i|
       image_file = images+i.to_s+'.txt'
-        unless File.file?(image_file)
-          puts "Error reading image file: #{image_file}"
-          gets
-          @status_images[i] = "\n[ Image ]\n[  not  ]\n[ found ]\n"
-        else
-          f = File.new(image_file,'r:UTF-8')
-          @status_images[i] = f.read
-          f.close
-        end
+      begin
+        f = File.open(image_file,'r:UTF-8')
+        @status_images[i] = f.read
+        f.close
+      rescue Errno::ENOENT
+        puts "Error reading image file: #{image_file}"
+        @status_images[i] = "\n[ Image ]\n[  not  ]\n[ found ]\n"
       end
+    end
   end # init
 
   def cls
