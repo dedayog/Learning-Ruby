@@ -1,5 +1,21 @@
-if 'я' > 'a'
-  p true
+# adsad
+digit = -1
+until digit == '0'
+  digit = gets.chomp.to_i.to_s
+  sum = 0
+  digit = digit.split('').map(&:to_i)
+  digit.each do |e|
+    if (e * 2) > 9
+      sum += 1 + (e * 2) % 10
+    else
+      sum += e
+    end
+  end
+  digit = digit.join
+  if sum != 0
+    puts('Sum is correct') if (sum % 10).zero?
+    puts("Sum is #{sum} of #{digit}")
+  end
 end
 
 __END__
