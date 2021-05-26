@@ -1,3 +1,17 @@
+class MyClass
+  def outer_method
+    def inner_method
+      puts "self = #{self.inspect}"
+    end
+  end
+end
+
+obj = MyClass.new
+obj.outer_method
+obj.inner_method
+
+__END__
+
 # adsad
 digit = -1
 until digit == '0'
