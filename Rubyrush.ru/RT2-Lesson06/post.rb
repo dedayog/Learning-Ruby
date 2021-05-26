@@ -17,6 +17,6 @@ class Post
     f.close
   end
   def file_path
-    __dir__ + '/' + @created_at.strstrftime("#{self.class.name}_Y%_m%_d%_H%_M%_S%.txt")
+    __dir__ + '/' + @created_at.strftime("#{self.class.name}_Y%_m%_d%_H%_M%_S%.txt")
   end
 end
