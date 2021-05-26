@@ -1,4 +1,3 @@
-require 'post.rb'
 require 'date'
 
 class Task < Post
@@ -16,8 +15,8 @@ class Task < Post
     @due_date = Date.parse(input)
   end
   def to_strings
-    time_string = "Created at: #{@created_at.strftime('Y%-m%-d% H%:M%:S%')} /n/r /n/r"
-    deadline = "Deadline at: #{due_date}"
+    time_string = "Created at: #{@created_at.strftime('%Y-%m-%d %H:%M:%S')} /n/r /n/r"
+        deadline = "Deadline at: #{due_date}"
     return [deadline, @text, time_string]
   end
 end

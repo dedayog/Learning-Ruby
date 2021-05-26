@@ -11,7 +11,7 @@ class Memo < Post
     return @text
   end
   def to_strings
-    time_string = "Created at: #{@created_at.strftime('Y%-m%-d% H%:M%:S%')} /n/r /n/r"
-    @text.unshift(time_string)
+    time_string = "Created at: #{@created_at.strftime('%Y-%m-%d %H:%M:%S')} /n/r /n/r"
+        @text.unshift(time_string)
   end
 end
