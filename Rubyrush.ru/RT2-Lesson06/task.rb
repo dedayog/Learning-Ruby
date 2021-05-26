@@ -16,7 +16,7 @@ class Task < Post
   end
   def to_strings
     time_string = "Created at: #{@created_at.strftime('%Y-%m-%d %H:%M:%S')} /n/r /n/r"
-        deadline = "Deadline at: #{due_date}"
+        deadline = "Deadline at: #{@due_date}"
     return [deadline, @text, time_string]
   end
 end
