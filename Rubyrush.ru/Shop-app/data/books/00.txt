@@ -1,0 +1,6 @@
+book
+name
+genre
+author
+price
+stock_balance

@@ -1,0 +1,6 @@
+movie
+name
+director
+year
+price
+stock_balance

@@ -1,7 +1,8 @@
 require_relative '../win_stdin'
-require_relative 'product'
-require_relative 'book'
-require_relative 'movie'
+require_relative 'lib/product'
+require_relative 'lib/book'
+require_relative 'lib/movie'
+require_relative 'lib/productcollection'
 
 b1= Book.new({stock_balance: 290, price: 42, name: 'Yey'})
 b2= Book.new({name: 'Lord of the Rings', genre: 'epic novel', author: 'John R. Tolkien', price: 99, stock_balance: 13})
@@ -14,6 +15,18 @@ puts m1.to_s
 m1.update({year:1984})
 puts m1
 
-puts Book.from_file
+puts Book.create(Book::from_file)
 
+puts Movie.create(Movie::from_file)
+puts Movie.create([
+'From Dusk till Dawn'  ,
+' Robert A. Rodriguez',
+1996,
+28,
+37
+]  )
+
+coll = ProductCollection.new(__dir__+'/data')
+p coll.categories
+puts coll.test
 # puts Book.file_name

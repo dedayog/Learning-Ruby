@@ -1,3 +1,12 @@
+input = aaaaabbbbcaaa
+
+
+__END__
+
+
+
+
+
 class MyClass
   def outer_method
     def inner_method
