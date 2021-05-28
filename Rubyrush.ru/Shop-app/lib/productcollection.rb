@@ -7,12 +7,16 @@ class ProductCollection
     update
   end
 
+  def sort(sort_column, sort_direction_is_forward)
+    unsorted_ary = @all_goodies.map(&:to_a).collect(&:flatten)
+    sorted_ary = unsorted_ary.sort_by { |elem| elem[sort_column]}
+    sort_direction_is_forward ? (return sorted_ary) : (return sorted_ary.reverse)
+  end
+
   def update
     @all_goodies = []
     read_goodies
   end
-
-private
 
   def update_schema
     result = {}
@@ -28,6 +32,8 @@ private
     end
     result
   end
+
+  private
 
   def read_data_file(file_name)
     unless File.file?(file_name)
@@ -48,8 +54,15 @@ private
 
   def add_to_collection(category, data_array)
     if category && data_array
+      data_array[-2..-1] = data_array[-2..-1].map(&:to_i)
       @all_goodies << {category => data_array}
     end
+  end
+
+  def self.sort(sort_column, sort_direction_is_forward, all_goodies)
+    unsorted_ary = all_goodies.map(&:to_a).collect(&:flatten)
+    sorted_ary = unsorted_ary.sort_by { |elem| elem[sort_column]}
+    sort_direction_is_forward ? (return sorted_ary) : (return sorted_ary.reverse)
   end
 
 end
