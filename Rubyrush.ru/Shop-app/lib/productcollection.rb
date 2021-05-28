@@ -1,70 +1,57 @@
 class ProductCollection
-  @all_goodies = []
-  @categories = {}
-  attr_reader  :categories, :all_goodies
+  attr_reader  :schema, :all_goodies
   attr_writer :data_dir
   def initialize(data_dir)
     @data_dir = data_dir
-    @categories = run_data_fill_keys
-    # @categories = fill_categories
-    @all_goodies = update
+    @schema = update_schema
+    update
   end
+
   def update
-
-  end
-  def test
-    Dir.children(File.dirname(caller_locations.first.path))
+    @all_goodies = []
+    read_goodies
   end
 
-  def fill_categories
+private
+
+  def update_schema
     result = {}
-    schema_file = 'schema.tag'
+    schema_file = '/schema.tag'
     file_name = @data_dir + schema_file
     lines = read_data_file(file_name)
+    abort 'Schema not present' unless lines
     lines.each do |i|
-      i.split(', ')
-end
-
-    if lines && lines[0].to_sym == key
-      fst = {lines.shift.to_sym => Hash[lines.map.each_with_index { |k2,i| [k2.to_sym,i] } ]}
-      result.merge!(fst)
+      cat_lines = i.split(', ')
+      category = {cat_lines[0] => cat_lines.shift}
+      category.merge!(cat_lines.shift.to_sym => Hash[cat_lines.map.each_with_index { |key, idx| [key.to_sym, idx]}])
+      result.merge!(category)
     end
     result
-    # Dir.foreach(@data_dir) {|x| puts "#{x}"}
-    # p Dir.each_child(@data_dir)
   end
 
   def read_data_file(file_name)
     unless File.file?(file_name)
       return nil
     else
-      lines = File.readlines(file_name, encoding: 'UTF-8', chomp: true)
+      return File.readlines(file_name, encoding: 'UTF-8', chomp: true)
     end
   end
 
-  def run_data_fill_keys
-  schema_file = '00.txt'
-  result = {}
-    self.class::data_files_location.each_pair do |key, val|
-      fn = __dir__ + val + schema_file
-      lines = read_data_file(fn)
-        if lines && lines[0].to_sym == key
-          fst = {lines.shift.to_sym => Hash[lines.map.each_with_index { |k2,i| [k2.to_sym,i] } ]}
-          result.merge!(fst)
-          # Dir.foreach(File.realdirpath(fn)) do |file|
-          #   file.include?
-          # end
-        end
+  def read_goodies
+    Dir.each_child(@data_dir) do |d|
+      dir_name = @data_dir + '/' + d
+      if File.directory?(dir_name) && @schema.fetch(d, false)
+        Dir.each_child(dir_name) { |f| add_to_collection(d, read_data_file(dir_name + '/' + f)) }
+      end
     end
-    result
   end
-  # private_class_method
-  def self.data_files_location
-    {
-    book: '/../data/books/',
-    movie: '/../data/movies/',
-    }
+
+  def add_to_collection(category, data_array)
+    if category && data_array
+      @all_goodies << {category => data_array}
+    end
   end
+
 end
 
 # def self.foo
@@ -72,4 +59,13 @@ end
 #   puts "__method__: #{__method__}"
 #   puts "caller: #{caller}"
 #   puts "caller_locations.first.path: #{caller_locations.first.path}"
+# end
+# def self.test
+#   p Dir["#{@data_dir}/**/"]
+#   Dir.each_child(@data_dir) do |d|
+#     if File.directory?(@data_dir + '/' + d)
+#       p Dir.children(@data_dir + '/' + d)
+#     end
+#   end
+#   # p File.dirname(caller_locations.first.path)
 # end
